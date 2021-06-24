@@ -1,0 +1,13 @@
+@import '../css/styles/salesforce-lightning-design-system.css';
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
+  overflow: hidden;
+}
+.slds-context-bar__item--tab,
+.slds-context-bar__item_tab {
+  width: max-content !important;
+  max-width: max-content !important;
+}
