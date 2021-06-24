@@ -7,7 +7,7 @@
 import React from 'react';
 import NavBarTab from './NavBarTab';
 import Workspace from './Workspace';
-import NewIcon from '../css/icons/utility-sprite/svg/symbols.svg';
+import NewIcon from '../assets/icons/utility-sprite/svg/symbols.svg';
 import AppIcon from '../../assets/icon.png';
 
 class NavBarProps {
