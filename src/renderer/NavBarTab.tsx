@@ -6,6 +6,7 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
 import WorkspaceTab from './WorkspaceTab';
+import Symbols from '../assets/icons/utility-sprite/svg/symbols.svg';
 
 class NavBarTabProps {
   config: WorkspaceTab;
@@ -31,6 +32,7 @@ export default class NavBarTab extends React.Component<NavBarTabProps> {
       'slds-context-bar__item slds-context-bar__item_tab slds-is-active';
     const inactive = 'slds-context-bar__item slds-context-bar__item_tab';
     const ariaId = 'context-tab-id-' + this.props.config.id;
+    const icon = Symbols + '#close';
     return (
       <li
         onClick={this.handleClick.bind(this)}
@@ -61,7 +63,7 @@ export default class NavBarTab extends React.Component<NavBarTabProps> {
             title="Close Home"
           >
             <svg className="slds-button__icon" aria-hidden="true">
-              <use xlinkHref="/assets/icons/utility-sprite/svg/symbols.svg#close" />
+              <use xlinkHref={icon} />
             </svg>
             <span className="slds-assistive-text">Close Home</span>
           </button>
