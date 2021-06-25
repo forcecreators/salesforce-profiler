@@ -1,4 +1,4 @@
-<img src="assets/icon.png" width="100px%" />
+<img src="assets/icon.png" width="150px" />
 
 # Salesforce Profiler
 
