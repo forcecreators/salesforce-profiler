@@ -23,9 +23,8 @@ call :output "Getting latest version of node.js"
 nvm install latest
 call :output "Turning on nvm"
 nvm on
-echo. 2>build-out.txt
 call :output "Building application and dependencies.  This may take a few moments for fresh builds."
-start /wait /min setup.bat finish ^> build-out.txt
+start /wait setup.bat finish
 if %errorlevel% == 0 goto :completed
 goto :failed
 
@@ -50,16 +49,10 @@ echo [102;30m SUCCESS: [0m %~1
 EXIT /B 0
 
 :completed
-for /f "delims=" %%x in (build-out.txt) do echo %%x
-del build-out.txt
-echo.
 call :success "Build completed successfully"
 goto :done
 
 :failed
-for /f "delims=" %%x in (build-out.txt) do echo %%x
-del build-out.txt
-echo.
 call :error "Build Failed"
 goto :done
 
