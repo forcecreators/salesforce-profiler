@@ -1,9 +1,12 @@
-<img src="assets/icon.png" width="150px" />
+<img src="assets/icon.png" width="90px" style="float:left; padding-right:30px; padding-top:20px"/>
+<br/>
 
-# Salesforce Profiler
+## Salesforce Profiler
 
 Salesforce Profiler is a tool for profiling and inspecting your Salesforce ORG's performance.<br/>
 Our latest .dmg and .exe installers **[can be found here](https://github.com/forcecreators/salesforce-profiler/releases/latest)**
+<br/>
+<br/>
 
 # Getting Started
 
