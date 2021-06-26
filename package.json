@@ -1,6 +1,6 @@
 {
   "name": "salesforce-profiler",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "productName": "Salesforce Profiler",
   "description": "A tool for rapidly profiling logs from Salesforce",
   "scripts": {
