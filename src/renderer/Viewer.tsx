@@ -13,6 +13,7 @@ import VerticalNav from './VerticalNav';
 import constants, { Argument } from '../constants';
 import Summary from './views/Summary';
 import RawLog from './views/RawLog';
+import Limits from './views/Limits';
 
 class ViewerProps {
   workspace: Workspace;
@@ -51,7 +52,14 @@ export default class Viewer extends React.Component<ViewerProps> {
         return <RawLog logPath={activeTab.metadata.logPath} />;
         break;
       default:
-        return 'Nothing to see here.... yet.';
+        return (
+          <Limits
+            inputs={
+              activeTab.metadata.limits[constants.limitTypes.soql_queries]
+            }
+            executionTime={activeTab.metadata.executionTime}
+          />
+        );
     }
   }
 

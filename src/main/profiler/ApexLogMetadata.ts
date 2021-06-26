@@ -50,6 +50,8 @@ export default class ApexLogMetadata extends events.EventEmitter {
 
   limits: any;
 
+  executionTime: number;
+
   constructor(logPath: string) {
     super();
     this.logPath = logPath;
@@ -72,15 +74,16 @@ export default class ApexLogMetadata extends events.EventEmitter {
         parentIndex,
         this.logLines[index]
       );
+      if (!line) continue;
       this.processLine(line);
       if (line.limitDetail) {
         if (!this.limits[line.limitDetail.name])
           this.limits[line.limitDetail.name] = [];
-        this.limits[line.limitDetail.name].push(line);
+        this.limits[line.limitDetail.name].push(line.limitDetail);
       }
       this.reportProgress(index);
     }
-    console.log(this.lineMetadata);
+    this.executionTime = ApexLogMetadataLine.LAST_REPORTED_TIME;
     this.emit('complete', this);
   }
 

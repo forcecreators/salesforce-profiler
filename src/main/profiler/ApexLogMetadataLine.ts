@@ -28,14 +28,15 @@ const dmlTags = /DML_BEGIN|DML_END/;
 const soqlTags = /SOQL_EXECUTE_BEGIN|SOQL_EXECUTE_END/;
 const limitTags = /LIMIT_USAGE/;
 
-type Limit = {
+export type LimitDetail = {
   name: string;
   current: number;
   max: number;
+  time: number;
 };
 
 export default class ApexLogMetadataLine {
-  static EXECUTION_START: number;
+  static LAST_REPORTED_TIME: number;
 
   logLine: string;
 
@@ -61,7 +62,7 @@ export default class ApexLogMetadataLine {
 
   endTime: number;
 
-  limitDetail: Limit;
+  limitDetail: LimitDetail;
 
   constructor(index: number, parentIndex: number, logLine: string) {
     this.index = index;
@@ -75,11 +76,8 @@ export default class ApexLogMetadataLine {
       10
     );
 
-    if (!ApexLogMetadataLine.EXECUTION_START) {
-      ApexLogMetadataLine.EXECUTION_START = this.nanoToMs(this.nano);
-    }
-
     this.time = this.nanoToMs(this.nano);
+    if (this.time) ApexLogMetadataLine.LAST_REPORTED_TIME = this.time;
 
     this.classifyEvent();
     this.getDetailValue();
@@ -95,6 +93,7 @@ export default class ApexLogMetadataLine {
           name: constants.limitTypes.soql_queries,
           current: parseInt(spaceSplit[4]),
           max: parseInt(spaceSplit[7]),
+          time: ApexLogMetadataLine.LAST_REPORTED_TIME,
         };
       }
     }
