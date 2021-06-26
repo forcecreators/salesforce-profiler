@@ -28,6 +28,12 @@ const navigationElements = {
       id: 'raw-log',
     },
   ],
+  Limits: [
+    {
+      label: 'SOQL Queries',
+      id: 'limits-soql-queries',
+    },
+  ],
 };
 
 export default class VerticalNav extends React.Component<VerticalNavProps> {
