@@ -31,7 +31,39 @@ const navigationElements = {
   Limits: [
     {
       label: 'SOQL Queries',
-      id: 'limits-soql-queries',
+      id: constants.limitTypes.soql_queries,
+    },
+    {
+      label: 'SOQL Query Rows',
+      id: constants.limitTypes.soql_query_rows,
+    },
+    {
+      label: 'DML Statements',
+      id: constants.limitTypes.dml_statements,
+    },
+    {
+      label: 'DML Rows',
+      id: constants.limitTypes.dml_rows,
+    },
+    {
+      label: 'CPU Time',
+      id: constants.limitTypes.cpu_time,
+    },
+    {
+      label: 'Heap Size',
+      id: constants.limitTypes.heap_size,
+    },
+    {
+      label: 'Callouts',
+      id: constants.limitTypes.callouts,
+    },
+    {
+      label: 'Queueables',
+      id: constants.limitTypes.queueable,
+    },
+    {
+      label: 'Futures',
+      id: constants.limitTypes.future,
     },
   ],
 };

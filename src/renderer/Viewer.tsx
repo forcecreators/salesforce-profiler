@@ -51,16 +51,45 @@ export default class Viewer extends React.Component<ViewerProps> {
       case 'raw-log':
         return <RawLog logPath={activeTab.metadata.logPath} />;
         break;
+      case constants.limitTypes.soql_queries:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.soql_query_rows:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.dml_rows:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.dml_statements:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.cpu_time:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.heap_size:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.callouts:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.future:
+        return this.getLimitsComponent(activeTab);
+        break;
+      case constants.limitTypes.queueable:
+        return this.getLimitsComponent(activeTab);
+        break;
       default:
-        return (
-          <Limits
-            inputs={
-              activeTab.metadata.limits[constants.limitTypes.soql_queries]
-            }
-            executionTime={activeTab.metadata.executionTime}
-          />
-        );
+        return null;
     }
+  }
+
+  getLimitsComponent(activeTab) {
+    return (
+      <Limits
+        inputs={activeTab.metadata.limits[this.state.selectedViewId]}
+        executionTime={activeTab.metadata.executionTime}
+      />
+    );
   }
 
   render() {
