@@ -34,9 +34,22 @@ var eventTypes = {
   OPEN_PROCESSING_PROGRESS: 'OPEN_PROCESSING_PROGRESS',
   OPEN_PROCESSING_FINISHED: 'OPEN_PROCESSING_FINISHED'
 };
+var limitTypes = {
+  soql_queries: 'soql_queries',
+  soql_query_rows: 'soql_query_rows',
+  dml_statements: 'dml_statements',
+  dml_rows: 'dml_rows',
+  dml_push_immediate: 'dml_push_immediate',
+  cpu_time: 'cpu_time',
+  heap_size: 'heap_size',
+  callouts: 'callouts',
+  future: 'future',
+  queueable: 'queueable'
+};
 var _default = {
   ipc: ipc,
   eventTypes: eventTypes,
+  limitTypes: limitTypes,
   events: {
     startProcessing: function startProcessing(logPath) {
       return new Argument(eventTypes.OPEN_PROCESSING_START, logPath, null);
