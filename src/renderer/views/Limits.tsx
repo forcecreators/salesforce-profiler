@@ -32,25 +32,28 @@ export default class Limits extends React.Component<LimitsProps> {
         },
       ],
     };
+    let options = {};
+    if (this.props.inputs) {
+      this.props.inputs.forEach((limitData: LimitDetail) => {
+        data.datasets[0].data.push(limitData.current);
+        data.labels.push(limitData.time);
+      });
 
-    this.props.inputs.forEach((limitData: LimitDetail) => {
-      data.datasets[0].data.push(limitData.current);
-      data.labels.push(limitData.time);
-    });
+      options = {
+        scales: {
+          y: {
+            min: 0,
+            max: this.props.inputs[0].max,
+          },
+          x: {
+            type: 'linear',
+            min: 0,
+            max: this.props.executionTime,
+          },
+        },
+      };
+    }
 
-    const options = {
-      scales: {
-        y: {
-          min: 0,
-          max: this.props.inputs[0].max,
-        },
-        x: {
-          type: 'linear',
-          min: 0,
-          max: this.props.executionTime,
-        },
-      },
-    };
     console.log(data);
     return <Line data={data} options={options} />;
   }
