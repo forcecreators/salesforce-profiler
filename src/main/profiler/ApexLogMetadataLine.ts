@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable prefer-template */
 /* eslint-disable prefer-destructuring */
@@ -7,6 +8,8 @@
 /* eslint-disable @typescript-eslint/no-useless-constructor */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable max-classes-per-file */
+
+import constants from '../../constants';
 
 const blackList = /FLOW_START_INTERVIEW_LIMIT_USAGE/;
 const whiteList =
@@ -24,6 +27,12 @@ const workflowTags =
 const dmlTags = /DML_BEGIN|DML_END/;
 const soqlTags = /SOQL_EXECUTE_BEGIN|SOQL_EXECUTE_END/;
 const limitTags = /LIMIT_USAGE/;
+
+type Limit = {
+  name: string;
+  current: number;
+  max: number;
+};
 
 export default class ApexLogMetadataLine {
   static EXECUTION_START: number;
@@ -52,6 +61,8 @@ export default class ApexLogMetadataLine {
 
   endTime: number;
 
+  limitDetail: Limit;
+
   constructor(index: number, parentIndex: number, logLine: string) {
     this.index = index;
     this.parentIndex = parentIndex;
@@ -73,6 +84,20 @@ export default class ApexLogMetadataLine {
     this.classifyEvent();
     this.getDetailValue();
     this.classifyType();
+    if (this.type === 'limit') this.parseLimit();
+  }
+
+  private parseLimit() {
+    if (this.logLine.includes('Number of ')) {
+      const spaceSplit = this.logLine.trimStart().split(' ');
+      if (spaceSplit[2] === 'SOQL') {
+        this.limitDetail = {
+          name: constants.limitTypes.soql_queries,
+          current: parseInt(spaceSplit[4]),
+          max: parseInt(spaceSplit[7]),
+        };
+      }
+    }
   }
 
   private nanoToMs(nanoSeconds: number): number {
@@ -122,12 +147,13 @@ export default class ApexLogMetadataLine {
       this.type = 'dml';
     } else if (soqlTags.test(this.event)) {
       this.type = 'soql';
-    } else if (this.event === 'LIMIT_USAGE') {
+    } else if (
+      this.event === 'LIMIT_USAGE' ||
+      this.logLine.includes('Number of ') ||
+      this.logLine.includes('Maximum CPU time: ') ||
+      this.logLine.includes('Maximum heap size: ')
+    ) {
       this.type = 'limit';
-      const lineDetails = this.logLine.split('|');
-      //this.limitName = lineDetails[3];
-      //this.limitCurrent = parseInt(lineDetails[4]);
-      //this.limitMax = parseInt(lineDetails[5]);
     } else {
       this.type = 'other';
     }

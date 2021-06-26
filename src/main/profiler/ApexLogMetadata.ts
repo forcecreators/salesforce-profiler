@@ -9,12 +9,13 @@
 
 import events from 'events';
 import * as fs from 'fs';
+import constants from '../../constants';
 import ApexLogMetadataLine from './ApexLogMetadataLine';
 
 /* nodes */
 const blackList = /FLOW_START_INTERVIEW_LIMIT_USAGE/;
 const whiteList =
-  /LIMIT_USAGE|SOQL_EXECUTE_BEGIN|SOQL_EXECUTE_END|DML_BEGIN|DML_END|USER_INFO|EXECUTION_STARTED|CODE_UNIT_STARTED|METHOD_ENTRY|CODE_UNIT_FINISHED|METHOD_EXIT|FLOW_START_INTERVIEW_BEGIN|FLOW_START_INTERVIEW_END|WF_CRITERIA_BEGIN|WF_CRITERIA_END|WF_RULE_EVAL_BEGIN|WF_RULE_EVAL_END|WF_RULE_NOT_EVALUATED|FLOW_CREATE_INTERVIEW_END|FLOW_INTERVIEW_FINISHED/;
+  /LIMIT_USAGE|SOQL_EXECUTE_BEGIN|SOQL_EXECUTE_END|DML_BEGIN|DML_END|USER_INFO|EXECUTION_STARTED|CODE_UNIT_STARTED|METHOD_ENTRY|CODE_UNIT_FINISHED|METHOD_EXIT|FLOW_START_INTERVIEW_BEGIN|FLOW_START_INTERVIEW_END|WF_CRITERIA_BEGIN|WF_CRITERIA_END|WF_RULE_EVAL_BEGIN|WF_RULE_EVAL_END|WF_RULE_NOT_EVALUATED|FLOW_CREATE_INTERVIEW_END|FLOW_INTERVIEW_FINISHED|Number of/;
 const startTagsWhitelist =
   /SOQL_EXECUTE_BEGIN|DML_BEGIN|CODE_UNIT_STARTED|METHOD_ENTRY|FLOW_START_INTERVIEW_BEGIN|WF_CRITERIA_BEGIN|WF_RULE_EVAL_BEGIN|FLOW_CREATE_INTERVIEW_END/;
 const endTagsWhitelist =
@@ -47,6 +48,8 @@ export default class ApexLogMetadata extends events.EventEmitter {
 
   rootIndexes: number[];
 
+  limits: any;
+
   constructor(logPath: string) {
     super();
     this.logPath = logPath;
@@ -56,6 +59,7 @@ export default class ApexLogMetadata extends events.EventEmitter {
     this.lineMetadata = [];
     this.parentTree = [];
     this.rootIndexes = [];
+    this.limits = {};
   }
 
   public async process() {
@@ -69,6 +73,11 @@ export default class ApexLogMetadata extends events.EventEmitter {
         this.logLines[index]
       );
       this.processLine(line);
+      if (line.limitDetail) {
+        if (!this.limits[line.limitDetail.name])
+          this.limits[line.limitDetail.name] = [];
+        this.limits[line.limitDetail.name].push(line);
+      }
       this.reportProgress(index);
     }
     console.log(this.lineMetadata);
